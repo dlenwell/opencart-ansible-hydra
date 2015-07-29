@@ -1,0 +1,7 @@
+.vagrant
+opt/*
+!opt/apps
+opt/apps/*
+!opt/apps/oc
+opt/apps/oc/*
+!.gitkeep

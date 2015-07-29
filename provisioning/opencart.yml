@@ -1,0 +1,16 @@
+---
+- include: common.yml
+
+- hosts: web
+  user: apps
+  sudo: yes
+  roles:
+    - opencart/php
+    - opencart/web
+    - vqmod
+
+- hosts: db
+  user: apps
+  sudo: yes
+  roles:
+    - opencart/db

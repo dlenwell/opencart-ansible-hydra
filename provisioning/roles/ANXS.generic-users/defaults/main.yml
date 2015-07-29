@@ -1,0 +1,17 @@
+genericusers_groups:
+  - name: devs
+    gid: 5000
+    system: no
+
+genericusers_users:
+  - name: apps
+    groups:
+      - devs
+    shell: /bin/bash
+    home: /opt/apps
+    ssh_keys:
+      - insecure-public-key.pub
+    uid: 1001
+
+genericusers_users_removed: []
+genericusers_groups_removed: []

@@ -1,0 +1,10 @@
+---
+- hosts: all
+  sudo: yes
+  serial: 2
+  roles:
+    - ANXS.generic-users
+    - sudoers
+    - timezone
+    - postfix
+    - packages

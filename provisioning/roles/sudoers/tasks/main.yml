@@ -1,0 +1,8 @@
+---
+- name: allowing members of devs group to become apps user
+  lineinfile: "dest=/etc/sudoers backup=yes state=present regexp='apps' line='%devs ALL=(apps) NOPASSWD: /bin/bash' validate='visudo -cf %s'"
+  tags: sudoers
+
+- name: don't prompt user apps for sudo password
+  lineinfile: "dest=/etc/sudoers backup=yes state=present regexp='%apps ALL=NOPASSWD:ALL' line='%apps ALL=NOPASSWD:ALL' validate='visudo -cf %s'"
+  tags: sudoers

@@ -1,0 +1,26 @@
+---
+- name: making MySQL listen on all interfaces
+  lineinfile: dest=/etc/mysql/my.cnf regexp="bind-address" state=absent
+  notify: restart mysql
+
+- name: installing the python-mysqldb package
+  apt: name=python-mysqldb state=latest
+
+- name: creating the databases
+  mysql_db: name={{ item }} state=present
+  with_items: databases
+
+- name: creating the MySQL user
+  mysql_user: name={{ opencart_db_user }} host=% password={{ opencart_db_pass }} priv=*.*:ALL state=present
+
+- name: pushing performance config
+  template: src=performance.cnf.j2 dest=/etc/mysql/conf.d/performance.cnf
+  register: performance
+
+- name: cleaning up old innodb log files
+  file: path={{ item }} state=absent
+  with_items:
+    - /var/lib/mysql/ib_logfile0
+    - /var/lib/mysql/ib_logfile1
+  when: performance.changed
+  notify: restart mysql

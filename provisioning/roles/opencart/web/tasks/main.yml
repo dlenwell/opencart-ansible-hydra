@@ -1,0 +1,27 @@
+---
+- name: creating the sites-available/enabled dirs
+  file: dest={{ item }} mode=0755 state=directory
+  with_items:
+    - /etc/nginx/sites-available
+    - /etc/nginx/sites-enabled
+
+- name: Setting up virtual hosts
+  template: src=opencart.j2 dest=/etc/nginx/sites-available/{{ oc_version_subdomain }}.egk.dev
+  notify: reload nginx
+
+- name: Enabling virtual host
+  file: src=/etc/nginx/sites-available/{{ oc_version_subdomain }}.egk.dev dest=/etc/nginx/sites-enabled/{{ oc_version_subdomain }}.egk.dev state=link
+
+- name: Creating the includes.d and conf.d folder for nginx
+  file: state=directory path={{ item }}
+  with_items:
+    - /etc/nginx/conf.d
+    - /etc/nginx/includes.d
+
+- name: Setting up the PHP node proxying
+  copy: src=proxy_php.include dest=/etc/nginx/includes.d
+  notify: reload nginx
+
+- name: Setting up the PHP node upstream
+  copy: src=php_node.conf dest=/etc/nginx/conf.d
+  notify: reload nginx

@@ -16,6 +16,10 @@
   with_items:
     - php5-fpm
     - php5-cli
+    - php5-gd
+    - php5-curl
+    - php5-mcrypt
+  notify: reload php5-fpm
 
 - name: Setting up config files
   template: src={{ item.name }} dest={{ item.path }}/{{ item.name }}

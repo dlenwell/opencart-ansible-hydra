@@ -1,0 +1,25 @@
+---
+vagrant:
+  default_box: Wheezy-7.8.0
+  default_box_url: https://s3.eu-central-1.amazonaws.com/oc-hydra/Wheezy-7.8.0.box
+  default_box_check_update: true
+  ssh_insert_key: false
+  min_memory: 256
+  min_cores: 1
+
+instances:
+
+  - hostname: web
+    private_ip: 172.16.0.10
+    memory: 1024
+    cores: max
+    mounts:
+      - host_path: opt/apps/
+        guest_path: /opt/apps
+        owner: apps
+        group: apps
+
+  - hostname: db
+    private_ip: 172.16.0.11
+    memory: 1024
+    cores: max

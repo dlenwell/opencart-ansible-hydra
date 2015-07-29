@@ -1,5 +1,0 @@
----
-- hosts: ses
-  sudo: yes
-  roles:
-    - redis

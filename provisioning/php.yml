@@ -1,6 +1,0 @@
----
-
-- hosts: php
-  sudo: yes
-  roles:
-    - php

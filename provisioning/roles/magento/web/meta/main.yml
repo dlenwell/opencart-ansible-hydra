@@ -1,4 +1,0 @@
----
-dependencies:
-  - { role: varnish,  sudo: yes }
-  - { role: nginx,    sudo: yes }

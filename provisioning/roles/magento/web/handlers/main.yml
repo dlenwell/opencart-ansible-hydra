@@ -1,9 +1,0 @@
----
-
-# @TODO: Find a way to get rid of this duplication,
-# this is already defined on nginx role
-- name: reload nginx
-  service: name=nginx state=reloaded
-
-- name: restart varnish
-  service: name=varnish state=restarted

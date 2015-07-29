@@ -1,0 +1,12 @@
+---
+- name: clone/checkout vqmod repository
+  git:
+    repo: https://github.com/vqmod/vqmod.git
+    dest: /opt/apps/oc/vqmod/
+    version: v2.5.1-opencart.zip
+
+- name: copy vqmod files to opencart folder
+  command: cp -rT /opt/apps/oc/vqmod/{{ item.from }} /opt/apps/oc/{{ oc_version }}/{{ item.to }}
+  with_items:
+    - { from: vqmod, to: vqmod }
+    - { from: platforms/opencart, to: vqmod }

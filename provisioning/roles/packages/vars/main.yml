@@ -1,0 +1,42 @@
+---
+
+ntp_servers:
+ - 0.debian.pool.ntp.org iburst dynamic
+ - 1.debian.pool.ntp.org iburst dynamic
+ - 2.debian.pool.ntp.org iburst dynamic
+ - 3.debian.pool.ntp.org iburst dynamic
+
+inst_pkgs:
+  - 'mdadm'
+  - 'python-urllib3'
+  - 'ntp'
+  - 'rsyslog'
+  - 'mutt'
+  - 'git'
+  - 'vim'
+  - 'mc'
+  - 'nmap'
+  - 'tcptraceroute'
+  - 'telnet'
+  - 'apt-show-versions'
+  - 'curl'
+  - 'sudo'
+  - 'chkconfig'
+  - 'iptraf'
+  - 'nethogs'
+  - 'iftop'
+  - 'mailutils'
+  - 'htop'
+  - 'iotop'
+  - 'lvm2'
+  - 'build-essential'
+  - 'make'
+  - 'mysql-client'
+  - 'screen'
+  - 'multitail'
+  - 'ruby1.9.3'
+  - 'dkms'
+  - 'ethtool'
+  - 'openssl'
+  - 'dnsutils'
+  - 'libssl-dev'

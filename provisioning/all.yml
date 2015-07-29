@@ -1,0 +1,9 @@
+---
+
+- hosts: all
+  sudo: yes
+  serial: 6
+  roles:
+    - timezone
+    - postfix
+    - packages

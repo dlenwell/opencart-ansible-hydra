@@ -1,0 +1,27 @@
+---
+- name: Fetching dotdeb signing key
+  apt_key: url=http://www.dotdeb.org/dotdeb.gpg
+
+- name: Adding the dotdeb key to the keyring
+  shell: gpg --keyserver keys.gnupg.net --recv-key 89DF5277 && gpg -a --export 89DF5277 | sudo apt-key add -
+
+- name: Adding dotdeb repository
+  apt_repository: repo='deb http://packages.dotdeb.org wheezy all' state=present
+
+- name: Adding dotdeb source repository
+  apt_repository: repo='deb-src http://packages.dotdeb.org wheezy all' state=present
+
+- name: Installing php5-fpm, php5-cli and php5-common
+  apt: name={{ item }} state=present update_cache=yes cache_valid_time=3600
+  with_items:
+    - php5-fpm
+    - php5-cli
+
+- name: Setting up config files
+  template: src={{ item.name }} dest={{ item.path }}/{{ item.name }}
+  with_items:
+    - { name: 'php.ini',      path: '/etc/php5/fpm' }
+    - { name: 'php-fpm.conf', path: '/etc/php5/fpm' }
+    - { name: 'timezone.ini', path: '/etc/php5/conf.d' }
+    - { name: 'www.conf',     path: '/etc/php5/fpm/pool.d' }
+  notify: reload php5-fpm

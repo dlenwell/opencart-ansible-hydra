@@ -1,0 +1,32 @@
+---
+- name: Fetching signing key
+  apt_key: url=http://repo.varnish-cache.org/debian/GPG-key.txt
+  register: varnish
+
+- name: Adding Varnish repo
+  apt_repository: repo='{{ item.repo}} {{ ansible_lsb.codename }} varnish-3.0' state=present
+  with_items:
+    - { repo: 'deb http://repo.varnish-cache.org/debian/' }
+    - { repo: 'deb-src http://repo.varnish-cache.org/debian/' }
+  when: varnish|success
+
+- name: Installing Varnish package
+  apt: name=varnish=3.0.6-1~wheezy state=present update_cache=yes
+  when: varnish|success
+
+- name: Locking varnish package
+  shell: apt-mark hold varnish
+
+- name: Generating varnish secret
+  shell:  "openssl passwd -1 -in /dev/urandom | head -1 > /etc/varnish/secret"
+
+- name: Pushing default config template
+  template: src=varnish.default.j2 dest=/etc/default/varnish owner=root group=root mode=0644
+
+- name: validating the default VCL
+  shell: varnishd -Cf /etc/varnish/default.vcl
+  register: varnish_config
+
+- name: Restarting Varnish
+  service: name=varnish state=restarted
+  when: varnish_config.rc == 0

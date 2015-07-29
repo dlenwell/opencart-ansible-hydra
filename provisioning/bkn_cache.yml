@@ -1,0 +1,6 @@
+---
+
+- hosts: bkn_cache
+  sudo: yes
+  roles:
+    - redis

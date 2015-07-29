@@ -1,0 +1,20 @@
+---
+- name: Fetching repo key
+  apt_key: url=http://nginx.org/keys/nginx_signing.key
+  register: repo
+
+- name: adding NGINX repo
+  apt_repository: repo='deb http://nginx.org/packages/debian/ {{ ansible_lsb.codename }} nginx' state=present
+  when: repo|success
+
+- name: installing nginx
+  apt: name=nginx state=present update_cache=yes cache_valid_time=3600
+  notify: reload nginx
+
+- name: removing conf.d folder
+  file: path=/etc/nginx/conf.d state=absent
+  notify: reload nginx
+
+- name: setting up the main config file
+  template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+  notify: reload nginx

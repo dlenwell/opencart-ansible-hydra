@@ -1,0 +1,31 @@
+---
+- name: creating the sites-available dir
+  file: dest={{ item }} mode=0755 state=directory
+  with_items:
+    - /etc/nginx/sites-available
+    - /etc/nginx/sites-enabled
+
+- name: Setting up magento.dev virtual host
+  copy: src=magento.dev dest=/etc/nginx/sites-available
+  notify: reload nginx
+
+- name: Enabling magento.dev virtual host
+  file: src=/etc/nginx/sites-available/magento.dev dest=/etc/nginx/sites-enabled/magento.dev state=link
+
+- name: Creating the includes.d and conf.d folder for nginx
+  file: state=directory path={{ item }}
+  with_items:
+    - /etc/nginx/conf.d
+    - /etc/nginx/includes.d
+
+- name: Setting up the PHP node proxying
+  copy: src=proxy_php.include dest=/etc/nginx/includes.d
+  notify: reload nginx
+
+- name: Setting up the PHP node upstream
+  copy: src=php_node.conf dest=/etc/nginx/conf.d
+  notify: reload nginx
+
+- name: Copying Magento's Varnish VCL
+  copy: src=default.vcl dest=/etc/varnish
+  notify: restart varnish

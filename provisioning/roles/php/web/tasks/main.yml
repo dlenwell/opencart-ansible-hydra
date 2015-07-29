@@ -1,0 +1,12 @@
+---
+- name: Adding proxy_php include for nginx
+  synchronize:
+    src: includes.d
+    dest: /etc/nginx
+  notify: reload nginx
+
+- name: Defining php_cluster upstream for nginx
+  synchronize:
+    src: conf.d
+    dest: /etc/nginx
+  notify: reload nginx

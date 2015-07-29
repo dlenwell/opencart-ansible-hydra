@@ -1,0 +1,18 @@
+server {
+  listen 8080;
+  server_name localhost {{ ansible_eth0.ipv4.address }};
+
+   location /nginx_status {
+    stub_status on;
+    access_log off;
+    allow 127.0.0.1;
+    deny all;
+   }
+
+  location ~ ^/(status_php|ping_php)$ {
+   include fastcgi_params;
+   include includes.d/proxy_php_status.include;
+   include includes.d/allow_internal_requests.include;
+  }
+
+}

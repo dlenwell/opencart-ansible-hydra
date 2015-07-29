@@ -1,0 +1,14 @@
+---
+- name: removing exim
+  apt: name=exim* state=absent
+
+- name: installing postfix
+  apt: name=postfix state=latest update_cache=yes
+
+- name: setting up canonical redirect in main.cf
+  lineinfile: regexp="canonical_maps" line="canonical_maps = regexp:/etc/postfix/canonical-redirect"
+              dest=/etc/postfix/main.cf state=present
+
+- name: setting the canonical redirect rule
+  lineinfile: regexp="root" line="/^.*$/ root" create=yes dest=/etc/postfix/canonical-redirect
+  notify: postfix restart

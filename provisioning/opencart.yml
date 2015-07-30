@@ -10,6 +10,15 @@
 
   pre_tasks:
 
+    - name: checking if the correct vars are defined
+      fail:
+        msg: |
+          You should specify what version of opencart you want to install.
+          To do that, run again the command using --extra-vars, for example:
+
+              $ ansible-playbook provisioning/opencart.yml --extra-vars oc_version=1.5.6
+      when: oc_version is not defined
+
     - name: defining the database name to be used by this version
       set_fact:
         oc_database: "{{ 'oc' + oc_version|lower|replace('.', '') }}"
@@ -22,15 +31,6 @@
   user: apps
   sudo: yes
   pre_tasks:
-
-    - name: checking if the correct vars are defined
-      fail:
-        msg: |
-          You should specify what version of opencart you want to install.
-          To do that, run again the command using --extra-vars, for example:
-
-              $ ansible-playbook provisioning/opencart.yml --extra-vars oc_version=1.5.6
-      when: oc_version is not defined
 
     - name: defining the version subdomain
       set_fact:

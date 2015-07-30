@@ -7,8 +7,7 @@
   apt: name=python-mysqldb state=latest
 
 - name: creating the databases
-  mysql_db: name={{ item }} state=present
-  with_items: databases
+  mysql_db: name={{ oc_database }} state=present
 
 - name: creating the MySQL user
   mysql_user: name={{ opencart_db_user }} host=% password={{ opencart_db_pass }} priv=*.*:ALL state=present

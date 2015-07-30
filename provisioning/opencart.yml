@@ -1,6 +1,23 @@
 ---
 - include: common.yml
 
+- hosts: db
+  user: apps
+  sudo: yes
+  vars:
+    opencart_db_user: opencart
+    opencart_db_pass: 12345
+
+  pre_tasks:
+
+    - name: defining the database name to be used by this version
+      set_fact:
+        oc_database: "{{ 'oc' + oc_version|lower|replace('.', '') }}"
+      when: oc_database is not defined
+
+  roles:
+    - opencart/db
+
 - hosts: web
   user: apps
   sudo: yes
@@ -9,8 +26,3 @@
     - opencart/web
     - vqmod
 
-- hosts: db
-  user: apps
-  sudo: yes
-  roles:
-    - opencart/db

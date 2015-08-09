@@ -9,6 +9,10 @@
 - name: installing the requested version
   command: cp -rT /opt/apps/oc/opencart /opt/apps/oc/{{ oc_version }}
 
+- name: removing the .git folder version
+  file: path=/opt/apps/oc/{{ oc_version }}/.git state=absent
+  tags: remove_git_folder
+
 - name: checking existence of config.php
   stat: path=/opt/apps/oc/{{ oc_version }}/upload/{{ item }}
   with_items:

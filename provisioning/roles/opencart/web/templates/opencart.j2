@@ -3,7 +3,7 @@ server {
   #listen 443 ssl;
   server_name {{ oc_version_subdomain }}.egk.dev;
 
-  root /opt/apps/oc/{{ oc_version }};
+  root /opt/apps/oc/{{ oc_version }}/upload;
 
   index                 index.php index.html index.htm;
   charset               utf-8;

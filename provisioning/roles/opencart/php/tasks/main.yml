@@ -7,17 +7,17 @@
     force: yes
 
 - name: installing the requested version
-  command: cp -rT /opt/apps/oc/opencart/upload /opt/apps/oc/{{ oc_version }}
+  command: cp -rT /opt/apps/oc/opencart /opt/apps/oc/{{ oc_version }}
 
 - name: checking existence of config.php
-  stat: path=/opt/apps/oc/{{ oc_version }}/{{ item }}
+  stat: path=/opt/apps/oc/{{ oc_version }}/upload/{{ item }}
   with_items:
     - config.php
     - admin/config.php
   register: config_stat
 
 - name: copy config-dist.php to config.php if not exists
-  command: cp /opt/apps/oc/{{ oc_version }}/{{ item.1.from }} /opt/apps/oc/{{ oc_version }}/{{ item.1.to }}
+  command: cp /opt/apps/oc/{{ oc_version }}/upload/{{ item.1.from }} /opt/apps/oc/{{ oc_version }}/upload/{{ item.1.to }}
   with_together:
     - config_stat.results
     -
